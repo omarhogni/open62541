@@ -786,6 +786,8 @@ UA_INLINABLE(UA_Boolean
     return (!UA_Variant_isScalar(v)) && type == v->type;
 })
 
+UA_DataType* UA_EXPORT UA_DataTypeByIndex(const size_t index);
+
 /* Set the variant to a scalar value that already resides in memory. The value
  * takes on the lifecycle of the variant and is deleted with it.
  *

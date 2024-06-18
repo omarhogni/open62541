@@ -739,6 +739,12 @@ Variant_copy(UA_Variant const *src, UA_Variant *dst, const UA_DataType *_) {
     return UA_STATUSCODE_GOOD;
 }
 
+UA_DataType* UA_DataTypeByIndex(const size_t index){
+    if (index >= UA_TYPES_COUNT)
+        return NULL;
+    return &UA_TYPES[index];
+}
+
 void
 UA_Variant_setScalar(UA_Variant *v, void * UA_RESTRICT p,
                      const UA_DataType *type) {
