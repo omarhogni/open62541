@@ -60,9 +60,6 @@ jobs:
       - name: Install Dependencies
         if: ${{ matrix.build.runs_on == '' || matrix.build.runs_on == matrix.os }}
         run: |
-          pip install sphinx # for documentation generation
-          pip install sphinx_rtd_theme # documentation style
-          brew install graphviz # for graphics in the documentation
           brew install check # for unit tests
           ${{ matrix.build.cmd_deps }}
       - name: ${{ matrix.build.name }}
