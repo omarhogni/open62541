@@ -10,10 +10,6 @@ jobs:
         os: [macos-latest]
         build:
           - name: "Debug Build & Unit Tests (AppleClang)"
-            cmd_deps: |
-              brew install mosquitto
-              ln -sfv /usr/local/opt/mosquitto/*.plist ~/Library/LaunchAgents
-              launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mosquitto.plist
             cmd_action: unit_tests
 
           - name: "Debug Build & Unit Tests without Subscriptions (AppleClang)"

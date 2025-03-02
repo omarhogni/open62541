@@ -210,7 +210,8 @@ if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND NOT UA_ENABLE_UNIT_TESTS_MEMCHECK)
     ua_add_test(check_eventloop_eth.c)
 endif()
 
-if(UA_ENABLE_MQTT)
+# NOT APPLE unable to start mosquitto in ci
+if(UA_ENABLE_MQTT AND NOT APPLE)
     ua_add_test(check_eventloop_mqtt.c)
 endif()
 
