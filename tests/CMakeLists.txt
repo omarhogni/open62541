@@ -286,14 +286,13 @@ if(UA_ENABLE_PUBSUB)
         ua_add_test(pubsub/check_pubsub_get_state.c)
         ua_add_test(pubsub/check_pubsub_publisherid.c)
         ua_add_test(pubsub/check_pubsub_subscribe_msgrcvtimeout.c)
+        ua_add_test(pubsub/check_pubsub_subscribe.c)
+        ua_add_test(pubsub/check_pubsub_publishspeed.c)
+        ua_add_test(pubsub/check_pubsub_offset.c) # This segfaults on macos
     endif()
     ua_add_test(pubsub/check_pubsub_udp_unicast.c)
 
-    #Link libraries for executing subscriber unit test
-    ua_add_test(pubsub/check_pubsub_subscribe.c)
-    ua_add_test(pubsub/check_pubsub_publishspeed.c)
 
-    ua_add_test(pubsub/check_pubsub_offset.c)
     # Timer functions not supported by apple
     if(UA_ARCHITECTURE_POSIX AND NOT APPLE)
         ua_add_test(pubsub/check_pubsub_custom_state_machine.c)
