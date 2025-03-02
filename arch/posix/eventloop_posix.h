@@ -175,12 +175,12 @@ _UA_END_DECLS
 /*---------------------*/
 
 #include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <netdb.h>
-#include <sys/ioctl.h>
-#include <sys/select.h>
 #include <net/if.h>
 #include <poll.h>
 #include <fcntl.h>
