@@ -144,9 +144,13 @@ function build_amalgamation_mt {
 ############################
 
 function set_capabilities {
-    for filename in bin/tests/*; do
-        sudo setcap cap_sys_ptrace,cap_net_raw,cap_net_admin=eip $filename
-    done
+    unameOut="$(uname -s)"
+    case "${unameOut}" in
+        Linux*)     
+            for filename in bin/tests/*; do
+                sudo setcap cap_sys_ptrace,cap_net_raw,cap_net_admin=eip $filename
+            done
+    esac
 }
 
 function unit_tests {
