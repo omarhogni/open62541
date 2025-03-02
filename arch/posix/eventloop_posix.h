@@ -263,11 +263,15 @@ typedef int SOCKET;
 #include <libgen.h>
 #include <limits.h>
 #include <stdio.h>
-#include <sys/inotify.h>
+#ifndef __APPLE__
+# include <sys/inotify.h>
+#endif /* !__APPLE__ */
 #include <sys/stat.h>
 
 #ifndef __ANDROID__
+#ifndef __APPLE__
 #include <bits/stdio_lim.h>
+#endif /* !__APPLE__ */
 #endif /* !__ANDROID__ */
 
 #define UA_STAT stat
