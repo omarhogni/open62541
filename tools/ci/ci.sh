@@ -145,12 +145,12 @@ function build_amalgamation_mt {
 
 function set_capabilities {
     unameOut="$(uname -s)"
-    case "${unameOut}" in
-        Linux*)     
-            for filename in bin/tests/*; do
+    for filename in bin/tests/*; do
+        case "${unameOut}" in
+            Linux*)     
                 sudo setcap cap_sys_ptrace,cap_net_raw,cap_net_admin=eip $filename
-            done
-    esac
+        esac
+    done
 }
 
 function unit_tests {

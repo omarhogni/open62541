@@ -172,7 +172,11 @@ if(UA_ENABLE_JSON_ENCODING)
 
     if(UA_ENABLE_PUBSUB)
         ua_add_test(pubsub/check_pubsub_encoding_json.c)
-        ua_add_test(pubsub/check_pubsub_publish_json.c)
+
+        # Unable to bind to udp port unless using sudo
+        if ( NOT APPLE )
+            ua_add_test(pubsub/check_pubsub_publish_json.c)
+        endif()
     endif()
 endif()
 
@@ -276,11 +280,14 @@ if(UA_ENABLE_PUBSUB)
     ua_add_test(pubsub/check_pubsub_encoding.c)
     ua_add_test(pubsub/check_pubsub_encoding_custom.c)
     ua_add_test(pubsub/check_pubsub_pds.c)
-    ua_add_test(pubsub/check_pubsub_connection_udp.c)
-    ua_add_test(pubsub/check_pubsub_publish.c)
-    ua_add_test(pubsub/check_pubsub_get_state.c)
+    if (NOT APPLE)
+        ua_add_test(pubsub/check_pubsub_connection_udp.c)
+        ua_add_test(pubsub/check_pubsub_publish.c)
+        ua_add_test(pubsub/check_pubsub_get_state.c)
+        ua_add_test(pubsub/check_pubsub_publisherid.c)
+        ua_add_test(pubsub/check_pubsub_subscribe_msgrcvtimeout.c)
+    endif()
     ua_add_test(pubsub/check_pubsub_udp_unicast.c)
-    ua_add_test(pubsub/check_pubsub_publisherid.c)
 
     #Link libraries for executing subscriber unit test
     ua_add_test(pubsub/check_pubsub_subscribe.c)
@@ -306,7 +313,6 @@ if(UA_ENABLE_PUBSUB)
         endif()
     endif()
 
-    ua_add_test(pubsub/check_pubsub_subscribe_msgrcvtimeout.c)
 
     if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
         ua_add_test(pubsub/check_pubsub_connection_ethernet.c)
@@ -316,7 +322,7 @@ if(UA_ENABLE_PUBSUB)
         #ua_add_test(pubsub/check_pubsub_connection_xdp.c)
     endif()
 
-    if(UA_ENABLE_PUBSUB_INFORMATIONMODEL)
+    if(UA_ENABLE_PUBSUB_INFORMATIONMODEL AND NOT APPLE)
         ua_add_test(pubsub/check_pubsub_informationmodel.c)
         ua_add_test(pubsub/check_pubsub_informationmodel_methods.c)
     endif()
