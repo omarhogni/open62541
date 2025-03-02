@@ -646,6 +646,7 @@ if((CMAKE_COMPILER_IS_GNUCC OR CMAKE_C_COMPILER_ID STREQUAL "Clang") AND
             check_add_cc_flag("-fprofile-instr-generate")
             check_add_cc_flag("-fcoverage-mapping")
             check_add_cc_flag("-fprofile-arcs")
+            check_add_cc_flag("-ftest-coverage")
         endif()
     endif()
 

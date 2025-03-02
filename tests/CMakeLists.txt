@@ -153,6 +153,9 @@ function(ua_add_test test_path_relative)
 
     add_executable(${TEST_NAME} ${test_path_relative} ${ARGN} $<TARGET_OBJECTS:open62541-object> $<TARGET_OBJECTS:open62541-plugins> $<TARGET_OBJECTS:open62541-testplugins>)
     target_link_libraries(${TEST_NAME} ${LIBS})
+    if (UA_ENABLE_COVERAGE AND APPLE) 
+        target_link_libraries(${TEST_NAME} --coverage)
+    endif()
     add_test_valgrind(${TEST_NAME} ${TESTS_BINARY_DIR}/${TEST_NAME})
     if(UA_ENABLE_NODESET_INJECTOR)
         set(UA_NODESETINJECTOR_TEST_NAMES ${TEST_NAME} ${UA_NODESETINJECTOR_TEST_NAMES} PARENT_SCOPE)
@@ -220,6 +223,9 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 target_link_libraries(check_server_password ${LIBS} -lcrypt)
 else()
 target_link_libraries(check_server_password ${LIBS})
+if (UA_ENABLE_COVERAGE AND APPLE) 
+    target_link_libraries(check_server_password --coverage)
+endif()
 endif()
 add_test_valgrind(server_password ${TESTS_BINARY_DIR}/check_server_password)
 
@@ -281,7 +287,8 @@ if(UA_ENABLE_PUBSUB)
     ua_add_test(pubsub/check_pubsub_publishspeed.c)
 
     ua_add_test(pubsub/check_pubsub_offset.c)
-    if(UA_ARCHITECTURE_POSIX)
+    # Timer functions not supported by apple
+    if(UA_ARCHITECTURE_POSIX AND NOT APPLE)
         ua_add_test(pubsub/check_pubsub_custom_state_machine.c)
     endif()
 
@@ -322,7 +329,10 @@ if(UA_ENABLE_PUBSUB)
     endif()
 endif()
 
+# Timer functions not supported by apple
+if (NOT APPLE)
 ua_add_test(server/check_server_readspeed.c)
+endif()
 ua_add_test(server/check_server_speed_addnodes.c)
 
 if(UA_ENABLE_SUBSCRIPTIONS)

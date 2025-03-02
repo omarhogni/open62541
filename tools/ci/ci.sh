@@ -170,7 +170,7 @@ function unit_tests {
     else
         COVERAGE=OFF
     fi
-    mkdir -p build; cd build; rm -rf *
+    rm -rf build; mkdir -p build; cd build
     cmake -DCMAKE_BUILD_TYPE=Debug \
           -DUA_BUILD_EXAMPLES=ON \
           -DUA_BUILD_UNIT_TESTS=ON \
