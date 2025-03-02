@@ -16,8 +16,12 @@ else
     MAKEOPTS="-j$(sysctl -n hw.ncpu)"
 fi
 
-# Allow to reuse TIME-WAIT sockets for new connections
-sudo sysctl -w net.ipv4.tcp_tw_reuse=1
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     
+        # Allow to reuse TIME-WAIT sockets for new connections
+        sudo sysctl -w net.ipv4.tcp_tw_reuse=1
+esac
 
 ###########
 # cpplint #
