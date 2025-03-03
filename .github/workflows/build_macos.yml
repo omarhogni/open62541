@@ -42,4 +42,4 @@ jobs:
         run: |
           rm -rf build; mkdir -p build; cd build
           cmake .. ${{matrix.cmake_options}}
-          cmake --build . -j sysctl -n hw.ncpu
+          cmake --build . -j ${sysctl -n hw.ncpu}
