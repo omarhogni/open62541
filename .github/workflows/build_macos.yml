@@ -13,7 +13,7 @@ jobs:
             cmake_options:
 
           - name: "Build shared library"
-            cmake_options: -DUA_BUILD_SHARED_LIBS=ON
+            cmake_options: -DBUILD_SHARED_LIBS=ON
 
           - name: "Build amalgamation"
             cmake_options: -DUA_ENABLE_AMALGAMATION=ON
@@ -24,7 +24,7 @@ jobs:
           
           - name: "Build shared lib with encryption, amalgamation, and INLINEABLE_EXPORT"
             cmd_deps: brew install mbedtls
-            cmake_options: -DUA_ENABLE_ENCRYPTION=MBEDTLS -DUA_ENABLE_AMALGAMATION=ON -DUA_ENABLE_INLINABLE_EXPORT=ON
+            cmake_options: -DBUILD_SHARED_LIBS=ON -DUA_ENABLE_ENCRYPTION=MBEDTLS -DUA_ENABLE_AMALGAMATION=ON -DUA_ENABLE_INLINABLE_EXPORT=ON
 
     name: ${{ matrix.os }}-${{ matrix.build.name }}
     runs-on: ${{ matrix.os }}
