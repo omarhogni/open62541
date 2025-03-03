@@ -41,5 +41,5 @@ jobs:
         if: ${{ matrix.build.runs_on == '' || matrix.build.runs_on == matrix.os }}
         run: |
           rm -rf build; mkdir -p build; cd build
-          cmake .. ${{matrix.cmake_options}}
+          cmake .. ${{matrix.build.cmake_options}}
           cmake --build . -j $(sysctl -n hw.ncpu)
