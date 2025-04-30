@@ -16,8 +16,12 @@ else
     MAKEOPTS="-j$(sysctl -n hw.ncpu)"
 fi
 
-# Allow to reuse TIME-WAIT sockets for new connections
-sudo sysctl -w net.ipv4.tcp_tw_reuse=1
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     
+        # Allow to reuse TIME-WAIT sockets for new connections
+        sudo sysctl -w net.ipv4.tcp_tw_reuse=1
+esac
 
 ###########
 # cpplint #
@@ -140,8 +144,12 @@ function build_amalgamation_mt {
 ############################
 
 function set_capabilities {
+    unameOut="$(uname -s)"
     for filename in bin/tests/*; do
-        sudo setcap cap_sys_ptrace,cap_net_raw,cap_net_admin=eip $filename
+        case "${unameOut}" in
+            Linux*)     
+                sudo setcap cap_sys_ptrace,cap_net_raw,cap_net_admin=eip $filename
+        esac
     done
 }
 
@@ -166,7 +174,7 @@ function unit_tests {
     else
         COVERAGE=OFF
     fi
-    mkdir -p build; cd build; rm -rf *
+    rm -rf build; mkdir -p build; cd build
     cmake -DCMAKE_BUILD_TYPE=Debug \
           -DUA_BUILD_EXAMPLES=ON \
           -DUA_BUILD_UNIT_TESTS=ON \

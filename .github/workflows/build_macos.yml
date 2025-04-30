@@ -1,0 +1,73 @@
+name: Mac os Build & test
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest]
+        build:
+          - name: "Debug Build & Unit Tests (AppleClang)"
+            cmd_action: unit_tests
+
+          - name: "Debug Build & Unit Tests without Subscriptions (AppleClang)"
+            cmd_action: unit_tests_nosub
+
+          - name: "Debug Build & Unit Tests with Diagnostics (AppleClang)"
+            cmd_action: unit_tests_diag
+
+          - name: "Debug Build & Unit Tests with multithreading (AppleClang)"
+            cmd_action: unit_tests_mt
+
+          - name: "Debug Build & Unit Tests with Alarms&Conditions (AppleClang)"
+            cmd_action: unit_tests_alarms
+
+          - name: "Encryption (MbedTLS) Build & Unit Tests (AppleClang)"
+            cmd_deps: brew install mbedtls
+            cmd_action: unit_tests_encryption MBEDTLS
+
+          - name: "PubSub Encryption (MbedTLS) Build & Unit Tests (AppleClang)"
+            cmd_deps: brew install mbedtls
+            cmd_action: unit_tests_encryption_mbedtls_pubsub
+
+          - name: "Encryption (OpenSSL) Build & Unit Tests (AppleClang)"
+            cmd_deps: 
+            cmd_action: unit_tests_encryption OPENSSL
+
+          - name: "Release Build"
+            cmd_deps: brew install mbedtls
+            cmd_action: build_release
+
+          - name: "Amalgamation Build"
+            cmd_action: build_amalgamation
+
+          - name: "Amalgamation Build with Multithreading"
+            cmd_action: build_amalgamation_mt
+
+          - name: "Build All Companion Specifications"
+            cmd_action: build_all_companion_specs
+
+    name: ${{ matrix.os }}-${{ matrix.build.name }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        if: ${{ matrix.build.runs_on == '' || matrix.build.runs_on == matrix.os }}
+        with:
+          submodules: true
+      - name: Install Dependencies
+        if: ${{ matrix.build.runs_on == '' || matrix.build.runs_on == matrix.os }}
+        run: |
+          brew install check # for unit tests
+          ${{ matrix.build.cmd_deps }}
+      - name: ${{ matrix.build.name }}
+        if: ${{ matrix.build.runs_on == '' || matrix.build.runs_on == matrix.os }}
+        run: source tools/ci/ci.sh && ${{ matrix.build.cmd_action }}
+        env:
+          ETHERNET_INTERFACE: eth0
+      - name: Upload coverage to Codecov
+        if: ${{ matrix.build.runs_on == '' || matrix.build.runs_on == matrix.os }}
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
