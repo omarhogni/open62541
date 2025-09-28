@@ -26,6 +26,10 @@
 #include "../../deps/parse_num.h"
 #include "../../deps/libc_time.h"
 
+#if defined(UA_ARCHITECTURE_WIN32)
+#include <windows.h>
+#endif
+
 const char * attributeIdNames[28] = {
     "Invalid", "NodeId", "NodeClass", "BrowseName", "DisplayName", "Description",
     "WriteMask", "UserWriteMask", "IsAbstract", "Symmetric", "InverseName",
